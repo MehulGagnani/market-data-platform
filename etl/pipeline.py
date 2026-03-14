@@ -1,10 +1,24 @@
+```python
 import requests
 import statistics
 import time
+import psycopg2
 from models import MarketData
 
 API_URL = "http://api:8000/v1/market-data"
 
+# Database connection
+conn = psycopg2.connect(
+    host="db",
+    database="market",
+    user="postgres",
+    password="postgres"
+)
+
+cursor = conn.cursor()
+
+
+# Extract
 def fetch_data():
 
     try:
@@ -19,10 +33,9 @@ def fetch_data():
     except Exception as e:
         print("Request failed:", e)
         return []
-    
+
 
 # Schema Validation
-
 def validate_data(records):
 
     valid_records = []
@@ -39,8 +52,8 @@ def validate_data(records):
 
     return valid_records, dropped
 
-# Outlier Detection
 
+# Outlier Detection
 def detect_outliers(data):
 
     prices = {}
@@ -66,8 +79,8 @@ def detect_outliers(data):
 
     return flagged
 
-#  VWAP Calculation
 
+# VWAP Calculation
 def calculate_vwap(data):
 
     result = {}
@@ -85,8 +98,24 @@ def calculate_vwap(data):
         for k, v in result.items()
     }
 
-# Pipeline Runner
 
+# Load to Postgres
+def insert_into_db(data):
+
+    for record in data:
+
+        cursor.execute(
+            """
+            INSERT INTO market_data (symbol, price, volume)
+            VALUES (%s, %s, %s)
+            """,
+            (record.instrument_id, record.price, record.volume)
+        )
+
+    conn.commit()
+
+
+# Pipeline Runner
 def run_pipeline():
 
     records = fetch_data()
@@ -100,6 +129,9 @@ def run_pipeline():
 
     vwap = calculate_vwap(valid)
 
+    # Load step (NEW)
+    insert_into_db(valid)
+
     print("Records Processed:", len(valid))
     print("Records Dropped:", dropped)
     print("VWAP:", vwap)
@@ -111,4 +143,4 @@ while True:
     run_pipeline()
 
     time.sleep(5)
-
+```
