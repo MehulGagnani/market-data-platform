@@ -103,31 +103,30 @@ All services communicate using Docker's internal network.
 
 ## Running the Project
 
-Requirements:
+### Requirements
+- Docker
+- Docker Compose
 
-* Docker
-* Docker Compose
-
-* Clone the repository:
-
+### Clone the repository
+```bash
 git clone https://github.com/MehulGagnani/market-data-platform.git
 cd market-data-platform
+```
 
-
-Run the entire system:
-
+### Run the entire system
+```bash
 docker compose up --build
+```
 
 This will start:
+- API server
+- ETL pipeline
+- PostgreSQL database
 
-* API server
-* ETL pipeline
-* PostgreSQL database
-
-Test API:
-
+### Test the API
+```
 http://localhost:8000/v1/market-data
-
+```
 ---
 
 # System Design Questions
