@@ -108,6 +108,12 @@ Requirements:
 * Docker
 * Docker Compose
 
+* Clone the repository:
+
+git clone https://github.com/MehulGagnani/market-data-platform.git
+cd market-data-platform
+
+
 Run the entire system:
 
 docker compose up --build
