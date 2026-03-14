@@ -1,0 +1,24 @@
+services:
+
+  api:
+    build: ./api
+    ports:
+      - "8000:8000"
+
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_DB: market
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  etl:
+    build: ./etl
+    depends_on:
+      - api
+      - db
+    env_file:
+      - .env

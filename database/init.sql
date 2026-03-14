@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS market_data (
+
+    instrument_id TEXT,
+    price FLOAT,
+    volume FLOAT,
+    timestamp TIMESTAMP,
+
+    PRIMARY KEY (instrument_id, timestamp)
+
+);
