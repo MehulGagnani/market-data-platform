@@ -106,7 +106,7 @@ def insert_into_db(data):
 
         cursor.execute(
             """
-            INSERT INTO market_data (symbol, price, volume)
+            INSERT INTO market_data (instrument_id, price, volume)
             VALUES (%s, %s, %s)
             """,
             (record.instrument_id, record.price, record.volume)
