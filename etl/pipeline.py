@@ -1,4 +1,3 @@
-```python
 import requests
 import statistics
 import time
@@ -143,4 +142,3 @@ while True:
     run_pipeline()
 
     time.sleep(5)
-```
