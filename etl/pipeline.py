@@ -2,6 +2,7 @@ import requests
 import statistics
 import time
 import psycopg2
+from datetime import datetime
 from models import MarketData
 
 API_URL = "http://api:8000/v1/market-data"
@@ -105,10 +106,10 @@ def insert_into_db(data):
 
         cursor.execute(
             """
-            INSERT INTO market_data (instrument_id, price, volume)
-            VALUES (%s, %s, %s)
+            INSERT INTO market_data (instrument_id, price, volume, timestamp)
+            VALUES (%s, %s, %s, %s)
             """,
-            (record.instrument_id, record.price, record.volume)
+            (record.instrument_id, record.price, record.volume, datetime.utcnow())
         )
 
     conn.commit()
